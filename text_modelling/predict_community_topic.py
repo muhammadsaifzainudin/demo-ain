@@ -2,6 +2,7 @@ from sklearn.pipeline import Pipeline
 from text_modelling import text_preprocessor as tp
 import pickle
 import nltk
+nltk.download('punkt')
 import numpy as np
 
 file_path = "text_modelling/model/community_topic_model.pickle"
