@@ -6,3 +6,6 @@ scikit-learn
 xgboost
 transformers
 streamlit
+stqdm
+pandas
+numpy
