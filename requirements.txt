@@ -1,0 +1,8 @@
+torch==1.8.1
+torchtext==0.9.1
+nltk==3.6.2
+tqdm==4.61.1
+scikit-learn
+xgboost
+transformers
+streamlit
