@@ -32,15 +32,15 @@ def processing_ain(dataframe):
     text = str(dataframe["valuesurvey.communityexperience.question.feedback"][i])
       
     if text == 'nan' or text == " ":
-      sentiment_list.append("Unspecified Comment")
-      topic_list.append("Unspecified Comment")
+      sentiment_list.append("No Comment")
+      topic_list.append("No Comment")
         
     else:
       processed_text = tp.text_preprocessor(text)
         
       if processed_text == '':
-        sentiment_list.append("Unspecified Comment")
-        topic_list.append("Unspecified Comment")
+        sentiment_list.append("Unspecified Comments")
+        topic_list.append("Unspecified Comments")
           
       else:
         sentiment_list.append(pred_sen.predict(processed_text)[1])
