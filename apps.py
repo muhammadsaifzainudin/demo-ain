@@ -84,8 +84,8 @@ def combine_data(hc, nps):
 
 add_selectbox = st.sidebar.selectbox("Navigation", ("AIN: Unifi Community", "AIN: NPS"))
 
-if add_selectbox == 'Welcome to AIN: Unifi Community':
-  st.title("AIN: Unifi Community")  
+if add_selectbox == 'AIN: Unifi Community':
+  st.title("Welcom to AIN: Unifi Community")  
   uploaded_file = st.file_uploader("Choose a file", type = ["csv"] )
   if uploaded_file is not None:
     dataframe =  pd.read_csv(uploaded_file)
