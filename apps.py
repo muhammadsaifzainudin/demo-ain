@@ -66,20 +66,52 @@ def save_json(df):
   #ret, out, err = run_cmd(cmd)
   
   return href
-  
-st.title("AIN: Unifi Community")  
-uploaded_file = st.file_uploader("Choose a file", type = ["csv"] )
 
-if uploaded_file is not None:
-  dataframe =  pd.read_csv(uploaded_file)
+def combine_data(hc, nps):
+  file_download = f"combined_nps_{str(datetime.now().strftime('%Y%m%d'))}.csv"
+  hc.columns = ['CSP Name', 'Name', 'XID',  'Team' ]
+  hc['CSP Name'] = hc['CSP Name'].apply(lambda x: x.upper())
+  nps['Staff Name'] = nps['Staff Name'].apply(lambda x: x.upper())
+
+  output = nps.merge(hc[['CSP Name', 'XID','Team']], how = 'left', left_on = 'Staff Name', right_on=  'CSP Name')
+
+  csv = output.to_csv(index=False)
+  b64 = base64.b64encode(csv.encode()).decode() # some strings <-> bytes conversions necessary here
+  href = f'<a href="data:file/csv;base64,{b64}" download="{file_download}" ><button>Download csv file</button></a>'
+
+  return href
   
-  if not "valuesurvey.communityexperience.question.feedback" in dataframe.columns:
-    st.write("The file does not contain customer feedback")
+
+add_selectbox = st.sidebar.selectbox("Navigation", ("AIN: Unifi Community", "AIN: NPS"))
+
+if add_selectbox == 'Welcome to AIN: Unifi Community':
+  st.title("AIN: Unifi Community")  
+  uploaded_file = st.file_uploader("Choose a file", type = ["csv"] )
+  if uploaded_file is not None:
+    dataframe =  pd.read_csv(uploaded_file)
   
-  else:
-    df = processing_ain(dataframe)
-    st.write(df)
-    st.markdown(save_json(df), unsafe_allow_html=True)
+    if not "valuesurvey.communityexperience.question.feedback" in dataframe.columns:
+      st.write("The file does not contain customer feedback")
+  
+    else:
+      df = processing_ain(dataframe)
+      st.write(df)
+      st.markdown(save_json(df), unsafe_allow_html=True)
+
+else:
+  st.title("Welcome to AIN: NPS") 
+  st.write("1. Please upload HC file")
+  hc_file_upload = st.file_uploader("Choose HC file", type = ["csv"] )
+  if hc_file_upload is not None:
+    hc = pd.read_csv(hc_file_upload)
+    st.write("2. Please upload NPS file")
+    nps_file_upload = st.file_uploader("Choose NPS file", type = ["csv"] )
+
+    if nps_file_upload is not None:
+      nps = pd.read_csv(nps_file_upload)
+      st.write("3. Here is your combined file")
+      st.markdown(combine_data(hc, nps), unsafe_allow_html=True )
+
     
       
       
